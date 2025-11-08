@@ -1,10 +1,18 @@
 using System;
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
     [Tooltip("Instancia")] public static GameManager Instance;
+    
+    [Tooltip("Lista de Objetivos")] public List<GameObject> targets;
+    [Tooltip("Salida")] public GameObject exit;
+    [Tooltip("Objetivos restantes")] public int remainingTargets;
+    [Tooltip("Texto coleccionables")] [SerializeField]
+    private TextMeshProUGUI collectiblesText;
     
     /// <summary>
     /// Velocidad Global del Juego
@@ -31,5 +39,24 @@ public class GameManager : MonoBehaviour
     private void OnDisable()
     {
         Instance =  null;
+    }
+    
+    /// <summary>
+    /// Contar objetos coleccionables
+    /// </summary>
+    private void CountCollectibles()
+    {
+        remainingTargets = targets.Count;
+    }
+
+    /// <summary>
+    /// Cuenta cuantos artículos coleccionables quedan, actualiza el texto en canvas y devuelve el valor
+    /// </summary>
+    /// <returns>Cantidad de coleccionables restantes</returns>
+    public int UpdateCollectibles()
+    {
+        CountCollectibles();
+        collectiblesText.text = $"x {remainingTargets}";
+        return remainingTargets;
     }
 }
